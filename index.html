@@ -10,8 +10,6 @@
 
         /* ════════════════════════════════════════
            MANTENIMIENTO — CSS
-           (Siempre presente. No tocar para activar/desactivar.
-            El control está en el bloque JS al final del archivo.)
         ════════════════════════════════════════ */
         .mnt-overlay {
             position: fixed; inset: 0; z-index: 99999;
@@ -130,7 +128,6 @@
             40%{ opacity:1; transform:scale(1.6); background:#ff6b9d; box-shadow:0 0 7px #ff6b9d; }
         }
         .mnt-sig { font-family: 'Dancing Script', cursive; font-size: 1.2rem; color: rgba(255,107,157,.28); }
-        /* ════ FIN CSS MANTENIMIENTO ════ */
 
 
         /* ════════════════════════════════════════
@@ -479,15 +476,165 @@
             .modal-content{margin:20px auto;padding:30px 20px} .secret-button{padding:18px 40px} .password-container{padding:40px 25px}
             .hero::before{width:200px;height:200px} .bday-imagen{max-width:90%} .bday-contenido{padding:20px}
         }
+
+        /* ══ FOTOS COMPARTIDAS ══ */
+        #fotos-compartidas {
+            min-height: 100vh; padding: 80px 20px;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #1a0010 0%, #2d0020 50%, #1a0010 100%);
+            position: relative; overflow: hidden;
+        }
+        #fotos-compartidas::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 20% 30%, rgba(255,107,157,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 70%, rgba(255,255,255,0.25) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 75% 20%, rgba(255,180,200,0.4) 0%, transparent 100%),
+                radial-gradient(1px 1px at 10% 80%, rgba(255,107,157,0.3) 0%, transparent 100%);
+            pointer-events: none; z-index: 1;
+        }
+        #fotos-compartidas .container { position: relative; z-index: 2; }
+        #fotos-compartidas .section-title { color: #f0c4d4; text-shadow: 0 0 20px rgba(255,107,157,0.4); }
+        .fc-intro { text-align: center; max-width: 680px; margin: 0 auto 42px; }
+        .fc-intro p { font-size: clamp(1.05em,2.3vw,1.3em); line-height: 1.85; color: #c9a8b8; }
+        .fc-upload-card { max-width: 560px; margin: 0 auto 50px; background: rgba(26,10,16,0.92); border-radius: 28px; border: 1px solid rgba(255,107,157,0.22); box-shadow: 0 0 40px rgba(255,107,157,0.12), 0 16px 50px rgba(0,0,0,0.45); overflow: hidden; }
+        .fc-upload-header { background: linear-gradient(135deg, #6b1535 0%, #3d0f22 60%, #1a0a10 100%); padding: 28px 24px 24px; text-align: center; }
+        .fc-upload-header h3 { font-family: 'Dancing Script', cursive; font-size: clamp(1.6em,4vw,2.2em); color: #f0c4d4; margin-bottom: 6px; }
+        .fc-upload-header p { font-size: clamp(0.85em,2vw,0.95em); color: rgba(240,196,212,0.75); font-family: 'Montserrat', sans-serif; }
+        .fc-ribbon { width: 100%; height: 16px; background: repeating-linear-gradient(90deg, rgba(255,107,157,0.5) 0px, rgba(255,107,157,0.5) 24px, rgba(201,42,88,0.4) 24px, rgba(201,42,88,0.4) 48px, rgba(255,215,0,0.25) 48px, rgba(255,215,0,0.25) 72px); }
+        .fc-upload-body { padding: 28px 24px 32px; }
+        .fc-who-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(0.85em,2vw,0.95em); color: #c0899a; margin-bottom: 10px; display: block; text-align: center; }
+        .fc-who-btns { display: flex; gap: 12px; justify-content: center; margin-bottom: 22px; }
+        .fc-who-btn { flex: 1; max-width: 140px; padding: 10px 16px; border-radius: 50px; border: 1px solid rgba(255,107,157,0.3); background: transparent; color: #c9a8b8; font-family: 'Montserrat', sans-serif; font-size: 0.82em; font-weight: 600; cursor: pointer; transition: all 0.25s; }
+        .fc-who-btn.active { background: linear-gradient(135deg, #7a1f3a, #a03050); border-color: transparent; color: #fdf5f8; box-shadow: 0 4px 16px rgba(201,42,88,0.35); }
+        .fc-who-btn:hover:not(.active) { border-color: rgba(255,107,157,0.6); color: #e8a0b0; }
+        .fc-dropzone { border: 2px dashed rgba(255,107,157,0.3); border-radius: 16px; padding: 36px 20px; text-align: center; cursor: pointer; transition: all 0.3s; margin-bottom: 18px; position: relative; background: rgba(255,107,157,0.03); }
+        .fc-dropzone:hover, .fc-dropzone.drag-over { border-color: rgba(255,107,157,0.7); background: rgba(255,107,157,0.07); }
+        .fc-dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+        .fc-dropzone-icon { font-size: 2.4em; margin-bottom: 10px; display: block; }
+        .fc-dropzone p { color: #a07080; font-size: clamp(0.85em,2vw,0.95em); font-style: italic; margin: 0; }
+        .fc-dropzone span { color: #e8a0b0; font-weight: 600; }
+        .fc-preview-wrap { display: none; margin-bottom: 18px; border-radius: 12px; overflow: hidden; position: relative; max-height: 220px; }
+        .fc-preview-wrap img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; display: block; }
+        .fc-preview-remove { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.6); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .fc-caption { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,107,157,0.2); border-radius: 12px; padding: 12px 16px; font-family: 'Cormorant Garamond', serif; font-size: clamp(0.95em,2.5vw,1.05em); color: #fdf5f8; outline: none; transition: border-color 0.25s; resize: none; min-height: 60px; box-sizing: border-box; margin-bottom: 18px; display: block; }
+        .fc-caption::placeholder { color: #7a4455; font-style: italic; }
+        .fc-caption:focus { border-color: rgba(255,107,157,0.5); }
+        .fc-upload-btn { width: 100%; background: linear-gradient(135deg, #7a1f3a, #a03050); border: none; border-radius: 50px; padding: 15px; font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: clamp(1em,2.5vw,1.1em); color: #fdf5f8; cursor: pointer; transition: opacity 0.25s, transform 0.2s; box-shadow: 0 6px 24px rgba(201,42,88,0.3); }
+        .fc-upload-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-2px); }
+        .fc-upload-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .fc-progress-wrap { display: none; margin-top: 14px; }
+        .fc-progress-bar-bg { height: 4px; background: rgba(255,107,157,0.1); border-radius: 4px; overflow: hidden; margin-bottom: 8px; }
+        .fc-progress-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, rgba(255,107,157,0.5), #ff6b9d, #c92a58); border-radius: 4px; transition: width 0.3s ease; box-shadow: 0 0 10px rgba(255,107,157,0.5); }
+        .fc-progress-text { text-align: center; font-family: 'Montserrat', sans-serif; font-size: 0.78em; color: #c0899a; }
+        .fc-toast { position: fixed; bottom: clamp(1.5rem,4vw,2.5rem); left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(26,10,16,0.95); border: 1px solid #e8a0b0; color: #fdf5f8; border-radius: 50px; padding: 0.6rem 1.8rem; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(0.9em,2.5vw,1.05em); backdrop-filter: blur(10px); z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.35s, transform 0.35s; white-space: nowrap; box-shadow: 0 8px 30px rgba(0,0,0,0.4); }
+        .fc-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .fc-gallery-title { font-family: 'Dancing Script', cursive; font-size: clamp(1.6em,4vw,2.2em); color: #f0c4d4; text-align: center; margin-bottom: 16px; }
+        .fc-realtime-dot { display: inline-block; width: 7px; height: 7px; background: #4ade80; border-radius: 50%; margin-right: 6px; box-shadow: 0 0 8px #4ade80; animation: fcBlink 2s ease-in-out infinite; }
+        @keyframes fcBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+        .fc-realtime-label { text-align: center; font-family: 'Montserrat', sans-serif; font-size: 0.68em; color: #7a8870; margin-bottom: 24px; letter-spacing: 0.08em; }
+        .fc-filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+        .fc-filter-btn { padding: 8px 20px; border-radius: 50px; border: 1px solid rgba(255,107,157,0.25); background: transparent; color: #a07080; font-family: 'Montserrat', sans-serif; font-size: 0.78em; font-weight: 600; cursor: pointer; transition: all 0.25s; }
+        .fc-filter-btn.active { background: rgba(255,107,157,0.15); border-color: rgba(255,107,157,0.5); color: #e8a0b0; }
+        .fc-filter-btn:hover:not(.active) { border-color: rgba(255,107,157,0.4); color: #c9a8b8; }
+        .fc-count { text-align: center; font-family: 'Montserrat', sans-serif; font-size: 0.72em; color: #7a4455; letter-spacing: 0.1em; margin-bottom: 20px; }
+        .fc-gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; margin-bottom: 30px; }
+        @media(max-width:500px){ .fc-gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } }
+        .fc-photo-card { border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; background: rgba(42,14,26,0.8); border: 1px solid rgba(255,107,157,0.1); transition: transform 0.3s, box-shadow 0.3s; aspect-ratio: 1; }
+        .fc-photo-card:hover { transform: scale(1.03); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+        .fc-photo-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .fc-photo-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,10,16,0.9) 0%, transparent 55%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 12px; }
+        .fc-photo-card:hover .fc-photo-overlay { opacity: 1; }
+        .fc-photo-who-tag { font-family: 'Montserrat', sans-serif; font-size: 0.62em; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #ff6b9d; margin-bottom: 3px; }
+        .fc-photo-caption-tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.85em; color: #fdf5f8; line-height: 1.3; }
+        .fc-photo-date-tag { font-size: 0.62em; color: rgba(255,255,255,0.35); margin-top: 3px; font-family: 'Montserrat', sans-serif; }
+        .fc-who-badge { position: absolute; top: 8px; left: 8px; font-size: 0.58em; font-family: 'Montserrat', sans-serif; font-weight: 700; padding: 3px 8px; border-radius: 50px; letter-spacing: 0.1em; }
+        .fc-who-badge.maddy { background: rgba(255,107,157,0.85); color: #fff; }
+        .fc-who-badge.maykel { background: rgba(60,100,200,0.85); color: #fff; }
+        .fc-photo-del { position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.55); border: none; color: rgba(255,255,255,0.6); width: 26px; height: 26px; border-radius: 50%; font-size: 11px; cursor: pointer; display: none; align-items: center; justify-content: center; transition: background 0.2s; }
+        .fc-photo-card:hover .fc-photo-del { display: flex; }
+        .fc-photo-del:hover { background: rgba(201,42,88,0.8); color: white; }
+        .fc-lightbox { display: none; position: fixed; inset: 0; z-index: 10002; background: rgba(0,0,0,0.92); backdrop-filter: blur(12px); align-items: center; justify-content: center; flex-direction: column; padding: 1rem; }
+        .fc-lightbox.open { display: flex; }
+        .fc-lightbox img { max-width: min(92vw,900px); max-height: 72dvh; border-radius: 8px; object-fit: contain; animation: fcZoomIn 0.3s ease; }
+        @keyframes fcZoomIn { from{transform:scale(0.85);opacity:0} to{transform:scale(1);opacity:1} }
+        .fc-lightbox-meta { margin-top: 14px; text-align: center; }
+        .fc-lightbox-who { font-family: 'Montserrat', sans-serif; font-size: 0.7em; font-weight: 600; color: #ff6b9d; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 4px; }
+        .fc-lightbox-cap { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1em; color: #fdf5f8; }
+        .fc-lightbox-date { font-size: 0.68em; color: rgba(255,255,255,0.35); margin-top: 4px; font-family: 'Montserrat', sans-serif; }
+        .fc-lightbox-close { position: fixed; top: 16px; right: 20px; background: rgba(255,255,255,0.12); border: none; color: white; width: 40px; height: 40px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .fc-lightbox-close:hover { background: rgba(201,42,88,0.7); }
+        .fc-empty { text-align: center; padding: 50px 20px; color: #7a4455; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: clamp(1em,2.5vw,1.15em); display: none; }
+        .fc-empty span { font-size: 2.5em; display: block; margin-bottom: 12px; }
+        .fc-loading-gal { text-align: center; padding: 40px; color: #7a4455; font-family: 'Montserrat', sans-serif; font-size: 0.82em; }
+        .fc-spinner-gal { width: 28px; height: 28px; border-radius: 50%; border: 3px solid rgba(255,107,157,0.15); border-top-color: #ff6b9d; animation: fcSpin 0.8s linear infinite; margin: 0 auto 12px; }
+        @keyframes fcSpin { to{transform:rotate(360deg)} }
+        /* ══ FIN ESTILOS FOTOS COMPARTIDAS ══ */
+
+        /* ══ ÁLBUM — UPLOAD DINÁMICO ══ */
+        .al-upload-zone-wrap { width: 100%; margin-bottom: 18px; }
+        .al-upload-trigger {
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            border: 2px dashed rgba(255,107,157,0.3); border-radius: 14px;
+            padding: 14px 20px; cursor: pointer; transition: all 0.25s;
+            background: rgba(255,107,157,0.03); width: 100%;
+        }
+        .al-sec-me .al-upload-trigger  { border-color: rgba(128,144,192,0.3); background: rgba(128,144,192,0.03); }
+        .al-sec-us .al-upload-trigger  { border-color: rgba(201,169,110,0.3); background: rgba(201,169,110,0.03); }
+        .al-upload-trigger:hover { border-color: rgba(255,107,157,0.65); background: rgba(255,107,157,0.07); }
+        .al-sec-me .al-upload-trigger:hover { border-color: rgba(128,144,192,0.65); background: rgba(128,144,192,0.07); }
+        .al-sec-us .al-upload-trigger:hover { border-color: rgba(201,169,110,0.65); background: rgba(201,169,110,0.07); }
+        .al-upload-trigger span { font-family: 'Montserrat', sans-serif; font-size: 0.78em; font-weight: 600; color: #c0899a; letter-spacing: 0.08em; }
+        .al-sec-me .al-upload-trigger span { color: #8090c0; }
+        .al-sec-us .al-upload-trigger span { color: #c9a96e; }
+        .al-upload-trigger input[type="file"] { display: none; }
+        .al-upload-prog-wrap { display: none; margin-top: 10px; }
+        .al-upload-prog-track { height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; margin-bottom: 6px; }
+        .al-upload-prog-fill { height: 100%; width: 0%; border-radius: 3px; transition: width 0.3s ease; box-shadow: 0 0 8px rgba(255,107,157,0.5); background: linear-gradient(90deg, rgba(255,107,157,0.5), #ff6b9d, #c92a58); }
+        .al-sec-me  .al-upload-prog-fill { background: linear-gradient(90deg, #4060a0, #8090c0); box-shadow: 0 0 8px rgba(128,144,192,0.5); }
+        .al-sec-us  .al-upload-prog-fill { background: linear-gradient(90deg, #a07030, #c9a96e); box-shadow: 0 0 8px rgba(201,169,110,0.5); }
+        .al-upload-prog-text { font-family: 'Montserrat', sans-serif; font-size: 0.68em; text-align: center; color: #c0899a; }
+        .al-sec-me  .al-upload-prog-text { color: #8090c0; }
+        .al-sec-us  .al-upload-prog-text { color: #c9a96e; }
+        .al-dyn-section-title { font-style: italic; font-size: clamp(.8rem,2vw,.9rem); letter-spacing:.1rem; width:100%; text-align:center; display:none; margin-top: 8px; }
+        .al-sec-her .al-dyn-section-title { color:#c0899a; }
+        .al-sec-me  .al-dyn-section-title { color:#8090c0; }
+        .al-sec-us  .al-dyn-section-title { color:#c9a96e; }
+        .al-dyn-mini-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(6px,1.5vw,12px); width:100%; }
+        @media(min-width:640px){ .al-dyn-mini-grid { grid-template-columns:repeat(4,1fr); } }
+        @media(min-width:900px){ .al-dyn-mini-grid { grid-template-columns:repeat(5,1fr); } }
+        .al-dyn-card { aspect-ratio:1; border-radius:clamp(6px,1.5vw,10px); overflow:hidden; position:relative; cursor:pointer; transition:transform .25s; }
+        .al-sec-her .al-dyn-card { background:#2a0e1a; }
+        .al-sec-me  .al-dyn-card { background:#0d1a35; }
+        .al-sec-us  .al-dyn-card { background:#2a1a08; }
+        .al-dyn-card:hover { transform:scale(1.05); }
+        .al-dyn-card img { width:100%; height:100%; object-fit:cover; display:block; }
+        .al-dyn-del {
+            position:absolute; top:5px; right:5px;
+            background:rgba(0,0,0,0.6); border:none; color:rgba(255,255,255,0.85);
+            width:24px; height:24px; border-radius:50%; font-size:9px; cursor:pointer;
+            display:none; align-items:center; justify-content:center;
+            z-index:2; transition:background 0.2s;
+        }
+        .al-dyn-card:hover .al-dyn-del { display:flex; }
+        .al-dyn-del:hover { background:rgba(201,42,88,0.9); color:#fff; }
+        .al-pol-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; gap:.6rem; }
+        .al-pol-placeholder span { font-size:2.5rem; opacity:.4; }
+        .al-pol-placeholder p { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.85rem; opacity:.4; }
+        .al-sec-her .al-pol-placeholder p { color:#e8a0b0; }
+        .al-sec-me  .al-pol-placeholder p { color:#8090c0; }
+        .al-sec-us  .al-pol-placeholder p { color:#c9a96e; }
+        .al-dyn-empty { text-align:center; padding:20px 10px; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.85rem; opacity:.35; display:none; }
+        .al-sec-her .al-dyn-empty { color:#e8a0b0; }
+        .al-sec-me  .al-dyn-empty { color:#8090c0; }
+        .al-sec-us  .al-dyn-empty { color:#c9a96e; }
+        /* ══ FIN ÁLBUM UPLOAD ══ */
+
     </style>
 </head>
 <body>
 
-    <!-- ═══════════════════════════════════════════════════════════════
-         ████  MANTENIMIENTO — HTML  ████
-         Siempre presente en el DOM.
-         Se activa/desactiva desde el bloque JS al final del archivo.
-    ═══════════════════════════════════════════════════════════════ -->
+    <!-- MANTENIMIENTO OVERLAY -->
     <div class="mnt-overlay mnt-hidden" id="mntOverlay">
         <div class="mnt-particles" id="mntParticles"></div>
         <div class="mnt-scanlines"></div>
@@ -521,12 +668,8 @@
             <p class="mnt-sig">att: Maykel 💕</p>
         </div>
     </div>
-    <!-- ═══════════════════════════════════════════════════════════════
-         FIN MANTENIMIENTO — HTML
-    ═══════════════════════════════════════════════════════════════ -->
 
-
-    <!-- ════ PASSWORD SCREEN ════ -->
+    <!-- PASSWORD SCREEN -->
     <div class="password-screen" id="passwordScreen">
         <div class="password-container">
             <div class="lock-icon">🔒</div>
@@ -539,7 +682,7 @@
         </div>
     </div>
 
-    <!-- ════ CONTENIDO PRINCIPAL ════ -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div class="main-content" id="mainContent">
         <nav>
             <ul>
@@ -552,6 +695,7 @@
                 <li><a href="#album-section">Nuestro Álbum 📸</a></li>
                 <li><a href="#galaxia">Tu Galaxia 🌌</a></li>
                 <li><a href="#secreto">Secreto</a></li>
+                <li><a href="#fotos-compartidas">Nuestras Fotos 📷</a></li>
             </ul>
         </nav>
         <div id="inicio" class="hero">
@@ -699,6 +843,58 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
                 </div>
             </div>
         </section>
+
+        <!-- ══ FOTOS COMPARTIDAS ══ -->
+        <section id="fotos-compartidas">
+            <div class="container">
+                <h2 class="section-title">Nuestras Fotos Juntos 📷💕</h2>
+                <div class="fc-intro">
+                    <p>Un lugar especial donde los dos podemos subir fotos desde cualquier dispositivo y verlas juntos en tiempo real 💖</p>
+                </div>
+                <div class="fc-upload-card">
+                    <div class="fc-upload-header">
+                        <h3>Subir una foto 📸</h3>
+                        <p>Sube tus recuerdos favoritos aquí</p>
+                    </div>
+                    <div class="fc-ribbon"></div>
+                    <div class="fc-upload-body">
+                        <span class="fc-who-label">¿Quién eres tú?</span>
+                        <div class="fc-who-btns">
+                            <button class="fc-who-btn active" onclick="fcSetWho('maddy', this)">🌸 Maddy</button>
+                            <button class="fc-who-btn" onclick="fcSetWho('maykel', this)">💙 Maykel</button>
+                        </div>
+                        <div class="fc-dropzone" id="fcDropzone">
+                            <input type="file" id="fcFileInput" accept="image/*" onchange="fcOnFileSelect(this)">
+                            <span class="fc-dropzone-icon">🖼️</span>
+                            <p>Arrastra una foto aquí o <span>toca para seleccionar</span></p>
+                        </div>
+                        <div class="fc-preview-wrap" id="fcPreviewWrap">
+                            <img id="fcPreviewImg" src="" alt="preview">
+                            <button class="fc-preview-remove" onclick="fcRemoveFile()" title="Quitar">✕</button>
+                        </div>
+                        <textarea class="fc-caption" id="fcCaption" placeholder="Escribe algo especial sobre este momento... 💕" rows="2" maxlength="200"></textarea>
+                        <button class="fc-upload-btn" id="fcUploadBtn" onclick="fcUpload()" disabled>💖 Guardar foto</button>
+                        <div class="fc-progress-wrap" id="fcProgressWrap">
+                            <div class="fc-progress-bar-bg"><div class="fc-progress-bar-fill" id="fcProgressFill"></div></div>
+                            <div class="fc-progress-text" id="fcProgressText">Subiendo...</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fc-gallery-title">Nuestros recuerdos ✨</div>
+                <div class="fc-realtime-label"><span class="fc-realtime-dot"></span>En tiempo real — se actualiza automáticamente</div>
+                <div class="fc-filters">
+                    <button class="fc-filter-btn active" onclick="fcFilter('all', this)">💕 Todos</button>
+                    <button class="fc-filter-btn" onclick="fcFilter('maddy', this)">🌸 Maddy</button>
+                    <button class="fc-filter-btn" onclick="fcFilter('maykel', this)">💙 Maykel</button>
+                </div>
+                <div class="fc-count" id="fcCount"></div>
+                <div id="fcLoadingGal" class="fc-loading-gal"><div class="fc-spinner-gal"></div>Cargando recuerdos...</div>
+                <div class="fc-gallery-grid" id="fcGrid"></div>
+                <div class="fc-empty" id="fcEmpty"><span>💕</span>Aún no hay fotos. ¡Sube el primer recuerdo!</div>
+            </div>
+        </section>
+        <!-- ══ FIN FOTOS COMPARTIDAS ══ -->
+
         <div id="letterModal" class="modal">
             <div class="modal-content">
                 <span class="close" onclick="closeModal()">&times;</span>
@@ -708,7 +904,19 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
         </div>
     </div>
 
-    <!-- ════ BIRTHDAY OVERLAY ════ -->
+    <!-- Lightbox Fotos Compartidas -->
+    <div class="fc-lightbox" id="fcLightbox">
+        <button class="fc-lightbox-close" onclick="fcCloseLightbox()">✕</button>
+        <img id="fcLightboxImg" src="" alt="foto">
+        <div class="fc-lightbox-meta">
+            <div class="fc-lightbox-who" id="fcLightboxWho"></div>
+            <div class="fc-lightbox-cap" id="fcLightboxCap"></div>
+            <div class="fc-lightbox-date" id="fcLightboxDate"></div>
+        </div>
+    </div>
+    <div class="fc-toast" id="fcToast"></div>
+
+    <!-- BIRTHDAY OVERLAY -->
     <div class="bday-overlay" id="bdayOverlay">
         <button class="bday-close-btn" onclick="cerrarExperienciaCumple()" title="Cerrar">✕</button>
         <div id="contadorFecha"></div>
@@ -728,7 +936,7 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
         </div>
     </div>
 
-    <!-- ════ GALAXY OVERLAY ════ -->
+    <!-- GALAXY OVERLAY -->
     <div class="galaxy-overlay" id="galaxyOverlay">
         <button class="galaxy-close-btn" onclick="cerrarGalaxia()" title="Cerrar">✕</button>
         <div class="galaxy-banner"><div class="galaxy-banner-inner"><p>🌌 Explora tu Galaxia Maddy 💖 — Se puede hacer zoom</p></div></div>
@@ -737,7 +945,7 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
         <audio id="galaxyMusic" loop><source src="https://cdn.pixabay.com/download/audio/2022/11/22/audio_aa0e27b8a6.mp3?filename=magical-love-193175.mp3" type="audio/mpeg"></audio>
     </div>
 
-    <!-- ════ ÁLBUM OVERLAY ════ -->
+    <!-- ÁLBUM OVERLAY -->
     <div class="album-overlay" id="albumOverlay">
         <button class="album-close-btn" onclick="cerrarAlbum()" title="Cerrar">✕</button>
         <div class="al-download-toast" id="alDownloadToast">📥 Abriendo descarga…</div>
@@ -782,8 +990,30 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
                 <div class="al-sec-header"><span class="al-sec-tag">✦ Sesión I</span><h2 class="al-sec-title">Mi <em>Hermosa</em><br/>Novia</h2><p class="al-sec-sub">La persona que hace que todo valga la pena</p></div>
                 <div class="al-divider"><span>❧</span></div>
                 <div class="al-layout" id="alHerLayout">
-                    <div><div class="al-polaroid" onclick="alOpenLightbox(alHerPhotos[0])"><div class="al-photo-slot has-photo"><img id="alImg1" src="" alt="Mi novia" style="display:block"/></div><div class="al-pol-label">~ mi amor ~</div></div></div>
-                    <div class="al-right-col"><p class="al-mini-label">Más momentos ↓</p><div class="al-mini-grid" id="alGrid1"></div></div>
+                    <div>
+                        <div class="al-polaroid" id="alPolHer" onclick="alPolClick('her')">
+                            <div class="al-photo-slot" id="alSlot1">
+                                <div class="al-pol-placeholder"><span>🌸</span><p>Sube la primera foto</p></div>
+                                <img id="alImg1" src="" alt="Mi novia" style="display:none"/>
+                            </div>
+                            <div class="al-pol-label">~ mi amor ~</div>
+                        </div>
+                    </div>
+                    <div class="al-right-col">
+                        <div class="al-upload-zone-wrap">
+                            <label class="al-upload-trigger">
+                                <input type="file" accept="image/*" onchange="alHandleUpload(this,'her')">
+                                📸 <span>Agregar foto</span>
+                            </label>
+                            <div class="al-upload-prog-wrap" id="alProg_her">
+                                <div class="al-upload-prog-track"><div class="al-upload-prog-fill" id="alFill_her"></div></div>
+                                <div class="al-upload-prog-text" id="alText_her">Subiendo...</div>
+                            </div>
+                        </div>
+                        <p class="al-dyn-section-title" id="alDynLabel_her">Todos los momentos ↓</p>
+                        <div class="al-dyn-mini-grid" id="alDynGrid_her"></div>
+                        <div class="al-dyn-empty" id="alEmpty_her">Aún no hay fotos en esta sesión 🌸</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -793,8 +1023,30 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
                 <div class="al-sec-header"><span class="al-sec-tag" style="color:#8090c0;border-color:#8090c0;">✦ Sesión II</span><h2 class="al-sec-title">El <em style="color:#8090c0;">Protagonista</em><br/>de su Historia</h2><p class="al-sec-sub" style="color:#8090c0;">Yo — el que la ama con todo</p></div>
                 <div class="al-divider"><span style="color:#8090c0;">❧</span></div>
                 <div class="al-layout" id="alMeLayout">
-                    <div><div class="al-polaroid" onclick="alOpenLightbox(alDrivePhotos[0])"><div class="al-photo-slot has-photo"><img id="alImg2" src="" alt="El Protagonista" style="display:block"/></div><div class="al-pol-label">~ el que la ama ~</div></div></div>
-                    <div class="al-right-col"><p class="al-mini-label" style="color:#8090c0;">Más momentos ↓</p><div class="al-mini-grid" id="alGrid2"></div></div>
+                    <div>
+                        <div class="al-polaroid" id="alPolMe" onclick="alPolClick('me')">
+                            <div class="al-photo-slot" id="alSlot2">
+                                <div class="al-pol-placeholder"><span>🖤</span><p>Sube la primera foto</p></div>
+                                <img id="alImg2" src="" alt="El Protagonista" style="display:none"/>
+                            </div>
+                            <div class="al-pol-label">~ el que la ama ~</div>
+                        </div>
+                    </div>
+                    <div class="al-right-col">
+                        <div class="al-upload-zone-wrap">
+                            <label class="al-upload-trigger">
+                                <input type="file" accept="image/*" onchange="alHandleUpload(this,'me')">
+                                📸 <span>Agregar foto</span>
+                            </label>
+                            <div class="al-upload-prog-wrap" id="alProg_me">
+                                <div class="al-upload-prog-track"><div class="al-upload-prog-fill" id="alFill_me"></div></div>
+                                <div class="al-upload-prog-text" id="alText_me">Subiendo...</div>
+                            </div>
+                        </div>
+                        <p class="al-dyn-section-title" id="alDynLabel_me" style="color:#8090c0;">Todos los momentos ↓</p>
+                        <div class="al-dyn-mini-grid" id="alDynGrid_me"></div>
+                        <div class="al-dyn-empty" id="alEmpty_me">Aún no hay fotos en esta sesión 🖤</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -804,8 +1056,30 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
                 <div class="al-sec-header"><span class="al-sec-tag" style="color:#c9a96e;border-color:#c9a96e;">✦ Sesión III</span><h2 class="al-sec-title">Nosotros — <em style="color:#c9a96e;">Juntos</em></h2><p class="al-sec-sub" style="color:#c9a96e;">Ella y yo, escribiendo nuestra historia</p></div>
                 <div class="al-divider"><span style="color:#c9a96e;">❧</span></div>
                 <div class="al-layout" id="alUsLayout">
-                    <div><div class="al-polaroid" onclick="alOpenLightboxFromSlot('alPhoto3')"><div class="al-photo-slot has-photo" id="alPhoto3"><img id="alImg3" src="" alt="Nosotros" style="display:none"/></div><div class="al-pol-label" style="color:#4a3015;">~ ella y yo ~</div></div></div>
-                    <div class="al-right-col"><p class="al-mini-label" style="color:#c9a96e;">Más momentos juntos ↓</p><div class="al-mini-grid" id="alGrid3"></div></div>
+                    <div>
+                        <div class="al-polaroid" id="alPolUs" onclick="alPolClick('us')">
+                            <div class="al-photo-slot" id="alSlot3">
+                                <div class="al-pol-placeholder"><span>💞</span><p>Sube la primera foto</p></div>
+                                <img id="alImg3" src="" alt="Nosotros" style="display:none"/>
+                            </div>
+                            <div class="al-pol-label" style="color:#4a3015;">~ ella y yo ~</div>
+                        </div>
+                    </div>
+                    <div class="al-right-col">
+                        <div class="al-upload-zone-wrap">
+                            <label class="al-upload-trigger">
+                                <input type="file" accept="image/*" onchange="alHandleUpload(this,'us')">
+                                📸 <span>Agregar foto</span>
+                            </label>
+                            <div class="al-upload-prog-wrap" id="alProg_us">
+                                <div class="al-upload-prog-track"><div class="al-upload-prog-fill" id="alFill_us"></div></div>
+                                <div class="al-upload-prog-text" id="alText_us">Subiendo...</div>
+                            </div>
+                        </div>
+                        <p class="al-dyn-section-title" id="alDynLabel_us" style="color:#c9a96e;">Todos los momentos juntos ↓</p>
+                        <div class="al-dyn-mini-grid" id="alDynGrid_us"></div>
+                        <div class="al-dyn-empty" id="alEmpty_us">Aún no hay fotos en esta sesión 💞</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -816,63 +1090,12 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
 
     <script>
 
-    /*/* ══════════════════════════════════════════════════════════════════
-       ████  MANTENIMIENTO — BLOQUE JS  ████
-       ──────────────────────────────────────────────────────────────────
-       ✅ ACTIVAR   → Quita el  /*  de la línea marcada con  [INICIO]
-                      y el  */  //de la línea marcada con  [FIN]
-       //❌ DESACTIVAR→ Pon  /*  en la línea [INICIO]  y  */  en [FIN]
-    //══════════════════════════════════════════════════════════════════ */
+    /* ══ MANTENIMIENTO (desactivado) ══ */
+    /*(function activarMantenimiento() {
+        ...
+    })();*/
 
-     
-
-    (function activarMantenimiento() {
-        const overlay   = document.getElementById('mntOverlay');
-        const particles = document.getElementById('mntParticles');
-        const bar       = document.getElementById('mntBar');
-        const pctLabel  = document.getElementById('mntPercent');
-
-        overlay.classList.remove('mnt-hidden');
-        document.body.style.overflow = 'hidden';
-
-        const cfg = [
-            { s:80,  l:'4%',  dur:14, delay:0   },
-            { s:140, l:'16%', dur:19, delay:3   },
-            { s:60,  l:'30%', dur:12, delay:7   },
-            { s:180, l:'44%', dur:25, delay:1.5 },
-            { s:100, l:'57%', dur:17, delay:5   },
-            { s:90,  l:'68%', dur:21, delay:9   },
-            { s:160, l:'78%', dur:23, delay:2   },
-            { s:55,  l:'88%', dur:15, delay:11  },
-            { s:120, l:'11%', dur:18, delay:6   },
-            { s:70,  l:'94%', dur:13, delay:4   },
-        ];
-        cfg.forEach(({ s, l, dur, delay }) => {
-            const p = document.createElement('div');
-            p.className = 'mnt-particle';
-            p.style.cssText = `width:${s}px;height:${s}px;left:${l};animation-duration:${dur}s;animation-delay:${delay}s;opacity:0`;
-            particles.appendChild(p);
-        });
-
-        let pct = 5, dir = 1;
-        setInterval(() => {
-            pct += dir * (Math.random() * 2.5 + .5);
-            if (pct >= 94) dir = -1;
-            if (pct <=  5) dir =  1;
-            pct = Math.max(5, Math.min(94, Math.round(pct)));
-            bar.style.width = pct + '%';
-            pctLabel.textContent = pct + '%';
-        }, 280);
-    })();
-
-    /* [FIN] ← quita este comentario para ACTIVAR el mantenimiento */
-
-    /* ══ FIN BLOQUE MANTENIMIENTO ══ */
-
-
-    /* ══════════════════════════════════════
-       SITE PASSWORD
-    ══════════════════════════════════════ */
+    /* ══ SITE PASSWORD ══ */
     const correctPassword = "17102025";
     function checkPassword() {
         const input = document.getElementById('passwordInput');
@@ -938,9 +1161,7 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
         anchor.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});});
     });
 
-    /* ══════════════════════════════════════
-       BIRTHDAY
-    ══════════════════════════════════════ */
+    /* ══ BIRTHDAY ══ */
     let lluviaInterval=null,fireworks=[],animatingFireworks=false;
     const canvas=document.getElementById('fuegos'),ctx=canvas.getContext('2d');
     const lluvia=document.getElementById('lluvia');
@@ -975,9 +1196,7 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
     function escribirTitulo(texto){const el=document.getElementById('tituloAnimado');el.textContent='';let i=0;const iv=setInterval(()=>{el.textContent+=texto.charAt(i);i++;if(i>=texto.length){clearInterval(iv);animarLineas();}},100);}
     function animarLineas(){const delay=600;['l1','l2','l3','l4'].forEach((id,idx)=>{setTimeout(()=>document.getElementById(id).classList.add('show'),delay*idx);});setTimeout(()=>{document.getElementById('bdayImagen').classList.add('show');document.getElementById('bdayFirma').classList.add('show');},delay*4+500);}
 
-    /* ══════════════════════════════════════
-       GALAXY
-    ══════════════════════════════════════ */
+    /* ══ GALAXY ══ */
     let galaxyScene=null,galaxyCamera=null,galaxyRenderer=null,galaxyControls=null,galaxyGroup=null,galaxyLetterSprite=null,galaxyAnimating=false,galaxyMusicPlaying=false;
     const galaxyMessages=["TE AMO","My love","Eres preciosa","Me encantas","Amor de mi vida","Para Ti","❤️❤️❤️","Mi Sol","Siempre juntos","Mi corazón","❤️","❤️","❤️","❤️","❤️","Eterno","Felicidad","Mi Corazón","Encantado","Eres mágica","Amor eterno","Universos","Constelaciones","Susurros","Estrella","17/10/2025"];
     function createGalaxyTextSprite(msg,color,size,scale){color=color||'#FFFFFF';size=size||50;scale=scale||1;const c=document.createElement('canvas');const ct=c.getContext('2d');c.width=512;c.height=128;ct.font=`bold ${size}px 'Dancing Script',cursive,sans-serif`;ct.fillStyle=color;ct.textAlign='center';ct.textBaseline='middle';ct.shadowColor='rgba(255,0,120,0.8)';ct.shadowBlur=10;ct.fillText(msg,c.width/2,c.height/2);const tex=new THREE.CanvasTexture(c);const mat=new THREE.SpriteMaterial({map:tex,transparent:true,depthTest:true});const sp=new THREE.Sprite(mat);const tf=msg.length<5?1:Math.min(msg.length/5,4);sp.scale.set(30*tf*scale,8*scale,1);return sp;}
@@ -990,51 +1209,10 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
     function cerrarGalaxia(){galaxyAnimating=false;document.getElementById('galaxyOverlay').classList.remove('active');document.body.style.overflow='auto';window.removeEventListener('resize',onGalaxyResize);const m=document.getElementById('galaxyMusic');m.pause();m.currentTime=0;galaxyMusicPlaying=false;document.getElementById('galaxyPlayBtn').innerHTML='🎵';document.getElementById('galaxyPlayBtn').classList.add('pulse-gal');heartsInterval=setInterval(createFloatingHeart,800);}
     function toggleGalaxyMusic(){const m=document.getElementById('galaxyMusic'),btn=document.getElementById('galaxyPlayBtn');if(galaxyMusicPlaying){m.pause();btn.innerHTML='🎵';btn.classList.add('pulse-gal');galaxyMusicPlaying=false;}else{m.play().catch(()=>{});btn.innerHTML='⏸️';btn.classList.remove('pulse-gal');galaxyMusicPlaying=true;}}
 
-    /* ══════════════════════════════════════
-       ÁLBUM DE FOTOS
-    ══════════════════════════════════════ */
+    /* ══ ÁLBUM DE FOTOS ══ */
     const AL_PASSWORD='madd26';
     let alCurrentPhotoUrl='';
-    let alBuilt=false;
-    function alDriveUrl(id){return `https://drive.google.com/thumbnail?id=${id}&sz=w800`;}
 
-    const alHerIds=['1CRZ8u_6Ms1qObRGbyUmf0n8gQriBx9CD','1uIIhLGPIaa7_veSZUI9j6EMbINHwk9xb','1rvJrkTYB1xUqTS-b6Ily8mpuMTmR2sxR','1ZsOUhrc4o7qOQnBirHMGSwhyd-fyu0aF','1AbCqVA22HwCjaTrKBfpfuWksF8no97fP','1ACAX4w9gWjMWOla71s96TKqS01OR0rFi','1mpE9AvFnTmb-5Wil1ddUzU-O1Dur25fs','16tSlHyEdTNtMDcEh0FI6iZ9AfnoACg-a','1mtw9G8HJH1qj5cNhgPnWaxSqow_cn_vu','1dgPygMkzO_Uhn6XQmSxUoqr3mtpDUvov','1byUjE8J3nCePI55NF6brjPK2vX3aVEIk','1GrhkQftmk6_uVZGJN7sNM2R5b7F5_BHG','1zsGVEIitnuXZk5h_QHqhl1je0q7P22_l','1_56aOYus2jacYs0MVzPsoIlUk6wYCSuT','1yK-qk9V7TgZAlR9pQ1wtHm_1G7qyBBAO','1NxdNXHxxpJ1zAsjJOtsYLoPypDN-5kLX','1bI2Cxhj0vF6Ksv_g6NcWMCk_yI7lwNyY','1UqsVNvebCdq9-IVBOs7_tWsqqCjGJUEV','1YJmrLmj-RLIVflvAOh0ma2G7yq8F9FHK','1wdIDA0II90iXAczVOlV00WXuNmCubZDt','1lLZgcHD4ufXA1gprkTrOUdmUESWXRhr6','1EEqGLcBbQNFfKjmuxxS1sop5IDZnbJlU','1TvhCUec3zyZVdy81_KVzQnna8NEi89Dx','1-Mw-Pg_uXzzWbqxKc0QYGcl5EYe9cTjg','1Nhnq0ClQID5yj_dpOi9p_91ftWcuWiDU','1vlb1V_W5Ujl87b8qXCu6_EfEasHYqsH0','18uTuCZgGMQUQXnWbhVA8njSgPuCPWPDx','1taD0JXFE8PlMsGQSiisnv42i4iYbqFEB','1015rvOWzwivtUoqeF3lZN3YPnt8USiQe','1HoFsOHNh2n22g40-gbuMSqh6kzodB3JK','15tvHVBW90xOYLpvD6L33C86DFngFPjKu','1odIy5UmNB7vdN2ztp9kZkVFP3UkcQRXM','1R9r-oV5ZJYtQFOKQoD2C-DGACFLr8ZKr','1OqzgS1KgjL1MGR00UNWFVrOmEsRR5J3U','1KMnhfTs7C8q7lQKjBU9vEOrRVfn3vpZr','1lLQ3-c2U4HNkWpik_4GQS8CWK8UUNFDe','1Ba0iTsYULXnTt1C_2jAmYDfIbyGthf8G','1Lb4ZzI0vEzKWW1Zw1YzPR7ReHsSltzJd','1cDOfXGEouhAbWNWI7jWoXtOd1qFGtPUI','1SD4dosWJOURgKACuwil1oy_lUkoZh4jX','1b0m7K59PJTlfjXj7eHK59Yymoor4_CM5','13Fiat966123MJ9vZ6XETuGbZQti9sz2L','1LAnyPdgfFnh-ljV024By1_cIcdvNDail','1PEKqtE8Od_aUje8DZjLeit5qN-3-A7-k','1rlXMpEDMGOxQjAZmwBmt3TAVHW0kh7AQ','1g8EKWFdmznuURwqCQ65a1pENhJZ4ecmZ','1LZSHxTernopzn3G5OkXigvpV8ljgkd0v','13CFWxhti1OywslOoWwbSEDp8cA_I0AEL','1fRMsGHuYEd4zrSD07qUOekoJfx7sp5QW','1Vgz_YkMV3X_cGEbaU4vuDm0UFuoT_hEw','1gO-dpob_Tew1t1ddRmptMh3EVFXc7XJw','1i8XyFajt-xyMj4KN9ECfnnJdiG7z_7in','1w_FAlziqaYXddwuOgjBZT8bQmCKP6SG5','186no4kdODhrqx9L0gbKjR6HhBkL4Azlm','12Kds5oGyS_X9BDnbooGnfGL8W8asBYFC','18lCVr7SiOxCD0Czj_VuD6BYNTyiLHLXc','1Rz1L_hmauPaoAhly0Fqyp075BjZIPxpC','1TuzGlEvfaOu4nkqsxDoRssZEVMzucv6v','1E-p91k4AI8MIw29V-NtDmtX1b95IOaBa','1dZFVE-jUOWw9toufkLoxRYrhCUKo-aaE','1vSlrk9nbS4SsoSoo6gZSF3xWA-9OVJ51','1xjGFblESbb3ejtTiY8wsFuePCV1ztS6-','166X_nrBkxZoul2DbOfuynGO9UoGNHAYX','1h-JOCZq6KbZiEFMF_G7vOA5RTOA9Tq3a','10KGNhwJWnQ2ThPZpw6mxueCz-CW97EbL','1ixnWG62YbQ9-VFdBP6PhzJtHUwB1dmjn','1R97GCl0XBIf-DCeNq2ZTMNoFBbpDuIkv','1Db1Eb6sYe-253E48PHJY2n-9Rg1UV_x8','1sthvg6GISfW2_bO4ieXwOneBytUx-fxF','1Tl3ciQT14YCZ71Qjx-EsBOl8QVjmfxj0'];
-    const alHerPhotos=alHerIds.map(alDriveUrl);
-
-    const alMeIds=['1QSmKx5Jnxqxk2DjonKopJlNrQMEseQcm','1KoleuNq1S5U8MRO8kSweA6oG9KgJSW4G','1s8otjROYdJjL3M46R4rNvaMFODSNhtvv','1U5YyuyN4QNF2EJi8LdgjSCLFaUFV-JxP','1HrPkMPBcL5jLYUxoXO5up1od0AOR-WXy','1PwTgybhgNPCvNjhpDt_xIcXs8e4tWisy','1s89-m-yZu9qbbBptgUb4vhAGgW4kXzgf','1HRXlpkzFTQa0vU2wjjKBuXr2S-rZKpcE','1iszab9a_53rNxtgDPKaTnP4FAp-UW6dg','1HnEN1UTYca04MrjVLlfcsMhRuyeNJo7H','1JJwdF2mbjXiT4d-9xN2hp2afgQot8Xad','1oT4CrHBDp19zNKEgmV23q5K0BEdddZQF'];
-    const alDrivePhotos=alMeIds.map(alDriveUrl);
-
-    const alUsIds=['1b3qMQ3FAgprhFu75PS6uNDIgrFxal2N3','1WUjro3c_sgsf6C5w83ne2Kth46sNX8oD','1cxcSs22fetV7cK3eoDfBONEzTvQNabkn','1PMMnsdhwtiSM98tYGNSq0b0DSKVU23lv','1uQlP-MEpaPSB5-bu4sb8KPMNsi2Easps','1nrEPGbJaht6Lw6jFBOjRWwmr8EWTitB1','1BWf4APoy_t2QZEqEVECBrzwSq003qsKs','1u3XxRi-vx6yNJR5jMzI97p3q1AfbxjGV','1Cnj4MOn00ZLBf4ULvYiAwO30_g9-G7Be','1MPj_GI9sux2UGApU1yig2kou45Vf6fDW','1OmJbTYR5d8NJq-_8Truwf9Q-7CE0WiOK','1rMOqAi0ouNxWrcybUD-bdrHoDl4N4l7A','1k6B7ZYthZa_o4gttCEQlUB-DN5P0xViM','1tJ3bI6RU28swjZxmiVyqjqGjKlXKLMwq','1HgSz_IQbsYZGTXnTVs3FPSZsQ2V8Pcsa','1gFAknvhzPrRMTrNJE8T7fZpOQwFG_rRb','11dcZHybv0Kqqycg4n3xMUUBca5S9QC6y','17DJFMI-FS9EbYqRN6WoYfB6ciy4E-O0q','1Ttjd6QJX6PrMSNWIIuIz8px92ihTMarD','1eaLSI6YgNAMpcfwYWKPByaSgudY2zbuF','1OmK3d5K6x-7PaLvVRo6dQt6aVwywOrXs','1H1i4tifAp50Dj6CPcPIFRuYwK2llhRU-','1e0TkaWdRi4hIRMDvS-gXprGchWb0ysp7','1sNZAE8_Kn0eQK26hPQocTSw2JZa0Dt85','18Gd3mEi3cRnXQ3XtTsGmgnxyNQsLa-Xc'];
-    const alUsPhotos=alUsIds.map(alDriveUrl);
-
-    function alBuildGrid(photos,gridId,sectionClass,spinnerColor){
-        const grid=document.getElementById(gridId);
-        if(!grid||grid.childElementCount>0)return;
-        for(let i=1;i<photos.length;i++){
-            const url=photos[i];
-            const card=document.createElement('div');card.className='al-mini-card';
-            const loader=document.createElement('div');loader.className='al-img-loader';
-            const spin=document.createElement('div');spin.className='al-spinner';spin.style.borderTopColor=spinnerColor;
-            loader.appendChild(spin);
-            const img=document.createElement('img');img.src=url;img.alt='foto';
-            img.style.cssText='width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .4s';
-            img.onload=()=>{img.style.opacity='1';loader.style.display='none';};
-            img.onerror=()=>{loader.innerHTML=`<span style="color:${spinnerColor};font-size:.7rem;font-style:italic;padding:.4rem;text-align:center;display:block">✕</span>`;};
-            card.appendChild(img);card.appendChild(loader);
-            card.onclick=()=>alOpenLightbox(url);
-            grid.appendChild(card);
-        }
-    }
-    function alBuildAll(){
-        if(alBuilt)return;alBuilt=true;
-        const img1=document.getElementById('alImg1');img1.src=alHerPhotos[0];img1.style.display='block';img1.onerror=()=>{img1.style.display='none';};
-        alBuildGrid(alHerPhotos,'alGrid1','al-sec-her','#e8a0b0');
-        const img2=document.getElementById('alImg2');img2.src=alDrivePhotos[0];img2.style.display='block';img2.onerror=()=>{img2.style.display='none';};
-        alBuildGrid(alDrivePhotos,'alGrid2','al-sec-me','#8090c0');
-        const img3=document.getElementById('alImg3');img3.src=alUsPhotos[0];img3.style.display='block';img3.onerror=()=>{img3.style.display='none';};
-        document.getElementById('alPhoto3').classList.add('has-photo');
-        alBuildGrid(alUsPhotos,'alGrid3','al-sec-us','#c9a96e');
-    }
     function alToggleEye(){const inp=document.getElementById('alLockInput'),btn=inp.nextElementSibling;inp.type=inp.type==='password'?'text':'password';btn.textContent=inp.type==='password'?'👁️':'🙈';}
     function alHandleKey(e){if(e.key==='Enter')alCheckPin();}
     function alToggleHint(){document.getElementById('alLockHint').classList.toggle('show');}
@@ -1044,7 +1222,6 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
         if(val===AL_PASSWORD){
             document.getElementById('alLock').style.display='none';
             document.getElementById('alCover').classList.add('visible');
-            alBuildAll();
         }else{
             const inp=document.getElementById('alLockInput'),box=document.getElementById('alLockBox');
             inp.classList.add('al-error-input');box.classList.add('al-shake');
@@ -1064,8 +1241,12 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
         document.getElementById('albumOverlay').scrollTop=0;
     }
     function alOpenLightbox(src){if(!src)return;alCurrentPhotoUrl=src;document.getElementById('alLightboxImg').src=src;document.getElementById('alLightbox').classList.add('open');}
-    function alOpenLightboxFromSlot(slotId){const slot=document.getElementById(slotId);if(!slot.classList.contains('has-photo'))return;alOpenLightbox(slot.querySelector('img').src);}
     function alCloseLightbox(){document.getElementById('alLightbox').classList.remove('open');alCurrentPhotoUrl='';}
+    /* polaroid click — abre lightbox si hay foto */
+    window.alPolClick = (session) => {
+        const img = document.getElementById('alImg' + ({her:'1',me:'2',us:'3'}[session]));
+        if(img && img.style.display !== 'none' && img.src) alOpenLightbox(img.src);
+    };
     document.getElementById('alLightbox').addEventListener('click',e=>{if(e.target===e.currentTarget)alCloseLightbox();});
     function alShowToast(msg){const t=document.getElementById('alDownloadToast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3500);}
     function alGetDriveId(url){const m=url.match(/[?&]id=([^&]+)/);return m?m[1]:null;}
@@ -1090,5 +1271,342 @@ En ese momento entendí que lo que sentía por ti era real y que ese "te amo" ib
     document.addEventListener('keydown',e=>{if(e.key==='Escape')alCloseLightbox();});
 
     </script>
+
+    <!-- ══ FIREBASE + CLOUDINARY — Fotos Compartidas y Álbum ══ -->
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDwh1QcECyp5IhTM5ph3RcHmGNTKkhcTV8",
+        authDomain: "fotoamormade.firebaseapp.com",
+        projectId: "fotoamormade",
+        storageBucket: "fotoamormade.firebasestorage.app",
+        messagingSenderId: "687831369473",
+        appId: "1:687831369473:web:253a05a57c2b008ed0fd00"
+    };
+    const FC_CLOUD = 'duvto4n5q';
+    const FC_PRESET = 'amor_fotos';
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    /* ─────────────────────────────────────────
+       FOTOS COMPARTIDAS
+    ───────────────────────────────────────── */
+    let fcWho = 'maddy';
+    let fcSelectedFile = null;
+    let fcAllPhotos = [];
+    let fcCurrentFilter = 'all';
+
+    function fcStartListener() {
+        const q = query(collection(db, 'fotos'), orderBy('ts', 'desc'));
+        onSnapshot(q, (snapshot) => {
+            fcAllPhotos = [];
+            snapshot.forEach(d => fcAllPhotos.push({ firestoreId: d.id, ...d.data() }));
+            document.getElementById('fcLoadingGal').style.display = 'none';
+            fcRender();
+        }, () => {
+            document.getElementById('fcLoadingGal').style.display = 'none';
+            const e = document.getElementById('fcEmpty');
+            e.style.display = 'block';
+            e.innerHTML = '<span>⚠️</span>Error al cargar. Recarga la página.';
+        });
+    }
+
+    window.fcSetWho = (who, btn) => {
+        fcWho = who;
+        document.querySelectorAll('.fc-who-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    };
+
+    setTimeout(() => {
+        const dz = document.getElementById('fcDropzone');
+        if (!dz) return;
+        dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+        dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+        dz.addEventListener('drop', e => {
+            e.preventDefault(); dz.classList.remove('drag-over');
+            const f = e.dataTransfer.files[0];
+            if (f && f.type.startsWith('image/')) fcSetFile(f);
+        });
+    }, 500);
+
+    window.fcOnFileSelect = input => { if (input.files?.[0]) fcSetFile(input.files[0]); };
+
+    function fcSetFile(file) {
+        fcSelectedFile = file;
+        const reader = new FileReader();
+        reader.onload = e => {
+            document.getElementById('fcPreviewImg').src = e.target.result;
+            document.getElementById('fcPreviewWrap').style.display = 'block';
+            document.getElementById('fcDropzone').style.display = 'none';
+            document.getElementById('fcUploadBtn').disabled = false;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    window.fcRemoveFile = () => {
+        fcSelectedFile = null;
+        document.getElementById('fcPreviewWrap').style.display = 'none';
+        document.getElementById('fcDropzone').style.display = 'block';
+        document.getElementById('fcFileInput').value = '';
+        document.getElementById('fcUploadBtn').disabled = true;
+    };
+
+    window.fcUpload = async () => {
+        if (!fcSelectedFile) return;
+        const btn = document.getElementById('fcUploadBtn');
+        const pw = document.getElementById('fcProgressWrap');
+        const pf = document.getElementById('fcProgressFill');
+        const pt = document.getElementById('fcProgressText');
+        btn.disabled = true; pw.style.display = 'block';
+        pf.style.width = '10%'; pt.textContent = 'Subiendo tu recuerdo...';
+        const fd = new FormData();
+        fd.append('file', fcSelectedFile);
+        fd.append('upload_preset', FC_PRESET);
+        fd.append('folder', 'amor_fotos');
+        try {
+            let prog = 10;
+            const iv = setInterval(() => { prog = Math.min(prog + Math.random()*18, 85); pf.style.width = prog + '%'; }, 300);
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${FC_CLOUD}/image/upload`, { method: 'POST', body: fd });
+            clearInterval(iv);
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            pf.style.width = '95%'; pt.textContent = 'Guardando en la nube...';
+            const caption = document.getElementById('fcCaption').value.trim();
+            await addDoc(collection(db, 'fotos'), {
+                cloudId: data.public_id, url: data.secure_url, who: fcWho, caption,
+                date: new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' }),
+                ts: Date.now()
+            });
+            pf.style.width = '100%'; pt.textContent = '¡Guardado! 💕';
+            setTimeout(() => {
+                pw.style.display = 'none'; pf.style.width = '0%';
+                window.fcRemoveFile(); document.getElementById('fcCaption').value = '';
+                btn.disabled = true; fcShowToast('¡Foto guardada con amor! 💕');
+            }, 800);
+        } catch {
+            pt.textContent = 'Error al subir. Intenta de nuevo.';
+            pf.style.width = '0%'; btn.disabled = false;
+            setTimeout(() => { pw.style.display = 'none'; }, 2500);
+        }
+    };
+
+    window.fcFilter = (who, btn) => {
+        fcCurrentFilter = who;
+        document.querySelectorAll('.fc-filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        fcRender();
+    };
+
+    function fcRender() {
+        const grid = document.getElementById('fcGrid');
+        const empty = document.getElementById('fcEmpty');
+        const count = document.getElementById('fcCount');
+        grid.innerHTML = '';
+        const filtered = fcCurrentFilter === 'all' ? fcAllPhotos : fcAllPhotos.filter(p => p.who === fcCurrentFilter);
+        count.textContent = filtered.length ? `${filtered.length} recuerdo${filtered.length !== 1 ? 's' : ''} guardado${filtered.length !== 1 ? 's' : ''} 💕` : '';
+        if (!filtered.length) { empty.style.display = 'block'; return; }
+        empty.style.display = 'none';
+        filtered.forEach(photo => {
+            const card = document.createElement('div');
+            card.className = 'fc-photo-card';
+            const whoLabel = photo.who === 'maddy' ? '🌸 Maddy' : '💙 Maykel';
+            const badgeClass = photo.who === 'maddy' ? 'maddy' : 'maykel';
+            card.innerHTML = `
+                <img src="${photo.url}" alt="recuerdo" loading="lazy">
+                <div class="fc-who-badge ${badgeClass}">${photo.who === 'maddy' ? 'Maddy' : 'Maykel'}</div>
+                <div class="fc-photo-overlay">
+                    <div class="fc-photo-who-tag">${whoLabel}</div>
+                    ${photo.caption ? `<div class="fc-photo-caption-tag">${photo.caption}</div>` : ''}
+                    <div class="fc-photo-date-tag">${photo.date}</div>
+                </div>
+                <button class="fc-photo-del" title="Eliminar">✕</button>`;
+            card.querySelector('.fc-photo-del').addEventListener('click', e => { e.stopPropagation(); fcDeletePhoto(photo.firestoreId); });
+            card.addEventListener('click', () => fcOpenLightbox(photo));
+            grid.appendChild(card);
+        });
+    }
+
+    async function fcDeletePhoto(id) {
+        if (!confirm('¿Eliminar este recuerdo? 💔')) return;
+        try { await deleteDoc(doc(db, 'fotos', id)); fcShowToast('Foto eliminada.'); }
+        catch { fcShowToast('Error al eliminar.'); }
+    }
+
+    window.fcOpenLightbox = photo => {
+        document.getElementById('fcLightboxImg').src = photo.url;
+        document.getElementById('fcLightboxWho').textContent = photo.who === 'maddy' ? '🌸 Maddy' : '💙 Maykel';
+        document.getElementById('fcLightboxCap').textContent = photo.caption || '';
+        document.getElementById('fcLightboxDate').textContent = photo.date;
+        document.getElementById('fcLightbox').classList.add('open');
+    };
+    window.fcCloseLightbox = () => document.getElementById('fcLightbox').classList.remove('open');
+    document.getElementById('fcLightbox').addEventListener('click', e => { if (e.target === e.currentTarget) window.fcCloseLightbox(); });
+
+    function fcShowToast(msg) {
+        const t = document.getElementById('fcToast');
+        t.textContent = msg; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3500);
+    }
+
+    /* ─────────────────────────────────────────
+       ÁLBUM — Upload / Delete por sesión
+       Colecciones Firestore: album_her, album_me, album_us
+    ───────────────────────────────────────── */
+    const AL_SESSIONS = {
+        her: { col: 'album_her', imgId: 'alImg1', slotId: 'alSlot1', gridId: 'alDynGrid_her', emptyId: 'alEmpty_her', labelId: 'alDynLabel_her', progId: 'alProg_her', fillId: 'alFill_her', txtId: 'alText_her', folder: 'album/her' },
+        me:  { col: 'album_me',  imgId: 'alImg2', slotId: 'alSlot2', gridId: 'alDynGrid_me',  emptyId: 'alEmpty_me',  labelId: 'alDynLabel_me',  progId: 'alProg_me',  fillId: 'alFill_me',  txtId: 'alText_me',  folder: 'album/me'  },
+        us:  { col: 'album_us',  imgId: 'alImg3', slotId: 'alSlot3', gridId: 'alDynGrid_us',  emptyId: 'alEmpty_us',  labelId: 'alDynLabel_us',  progId: 'alProg_us',  fillId: 'alFill_us',  txtId: 'alText_us',  folder: 'album/us'  }
+    };
+
+    // Per-session in-memory photo arrays
+    const alPhotos = { her: [], me: [], us: [] };
+
+    function alStartListeners() {
+        Object.entries(AL_SESSIONS).forEach(([sess, cfg]) => {
+            const q = query(collection(db, cfg.col), orderBy('ts', 'desc'));
+            onSnapshot(q, snapshot => {
+                alPhotos[sess] = [];
+                snapshot.forEach(d => alPhotos[sess].push({ firestoreId: d.id, ...d.data() }));
+                alRenderSession(sess);
+            });
+        });
+    }
+
+    function alRenderSession(sess) {
+        const cfg = AL_SESSIONS[sess];
+        const photos = alPhotos[sess];
+
+        // Polaroid — first photo
+        const img = document.getElementById(cfg.imgId);
+        const slot = document.getElementById(cfg.slotId);
+        if (photos.length > 0) {
+            img.src = photos[0].url;
+            img.style.display = 'block';
+            slot.querySelector('.al-pol-placeholder') && (slot.querySelector('.al-pol-placeholder').style.display = 'none');
+            // Delete button on polaroid
+            let polDel = slot.querySelector('.al-pol-del-btn');
+            if (!polDel) {
+                polDel = document.createElement('button');
+                polDel.className = 'al-dyn-del al-pol-del-btn';
+                polDel.title = 'Eliminar';
+                polDel.textContent = '✕';
+                polDel.style.cssText = 'position:absolute;top:8px;right:8px;display:flex;';
+                slot.style.position = 'relative';
+                slot.appendChild(polDel);
+            }
+            polDel.onclick = e => { e.stopPropagation(); alDeletePhoto(sess, photos[0].firestoreId); };
+        } else {
+            img.style.display = 'none';
+            img.src = '';
+            const ph = slot.querySelector('.al-pol-placeholder');
+            if (ph) ph.style.display = 'flex';
+            const polDel = slot.querySelector('.al-pol-del-btn');
+            if (polDel) polDel.remove();
+        }
+
+        // Mini grid — rest of photos
+        const grid = document.getElementById(cfg.gridId);
+        const empty = document.getElementById(cfg.emptyId);
+        const label = document.getElementById(cfg.labelId);
+        grid.innerHTML = '';
+        const rest = photos.slice(1);
+        if (rest.length === 0) {
+            empty.style.display = 'block';
+            label.style.display = 'none';
+        } else {
+            empty.style.display = 'none';
+            label.style.display = 'block';
+            rest.forEach(photo => {
+                const card = document.createElement('div');
+                card.className = 'al-dyn-card';
+                const imgEl = document.createElement('img');
+                imgEl.src = photo.url;
+                imgEl.alt = 'foto';
+                imgEl.loading = 'lazy';
+                const delBtn = document.createElement('button');
+                delBtn.className = 'al-dyn-del';
+                delBtn.textContent = '✕';
+                delBtn.title = 'Eliminar';
+                delBtn.onclick = e => { e.stopPropagation(); alDeletePhoto(sess, photo.firestoreId); };
+                card.appendChild(imgEl);
+                card.appendChild(delBtn);
+                card.addEventListener('click', () => {
+                    document.getElementById('alLightboxImg').src = photo.url;
+                    document.getElementById('alLightbox').classList.add('open');
+                });
+                grid.appendChild(card);
+            });
+        }
+    }
+
+    async function alDeletePhoto(sess, id) {
+        if (!confirm('¿Eliminar esta foto del álbum? 💔')) return;
+        try {
+            await deleteDoc(doc(db, AL_SESSIONS[sess].col, id));
+            alShowAlbumToast('Foto eliminada del álbum.');
+        } catch { alShowAlbumToast('Error al eliminar.'); }
+    }
+
+    function alShowAlbumToast(msg) {
+        const t = document.getElementById('alDownloadToast');
+        t.textContent = msg; t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // Upload handler — called from HTML onchange
+    window.alHandleUpload = async (input, sess) => {
+        const file = input.files?.[0];
+        if (!file || !file.type.startsWith('image/')) return;
+        input.value = ''; // reset so same file can be re-uploaded
+        const cfg = AL_SESSIONS[sess];
+        const prog = document.getElementById(cfg.progId);
+        const fill = document.getElementById(cfg.fillId);
+        const txt  = document.getElementById(cfg.txtId);
+        prog.style.display = 'block';
+        fill.style.width = '10%';
+        txt.textContent = 'Subiendo...';
+
+        const fd = new FormData();
+        fd.append('file', file);
+        fd.append('upload_preset', FC_PRESET);
+        fd.append('folder', cfg.folder);
+
+        try {
+            let p = 10;
+            const iv = setInterval(() => { p = Math.min(p + Math.random()*18, 85); fill.style.width = p + '%'; }, 300);
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${FC_CLOUD}/image/upload`, { method: 'POST', body: fd });
+            clearInterval(iv);
+            if (!res.ok) throw new Error();
+            const data = await res.json();
+            fill.style.width = '95%'; txt.textContent = 'Guardando...';
+            await addDoc(collection(db, cfg.col), {
+                url: data.secure_url,
+                cloudId: data.public_id,
+                date: new Date().toLocaleDateString('es-ES', { day:'numeric', month:'long', year:'numeric' }),
+                ts: Date.now()
+            });
+            fill.style.width = '100%'; txt.textContent = '¡Listo! 💕';
+            setTimeout(() => { prog.style.display = 'none'; fill.style.width = '0%'; alShowAlbumToast('¡Foto agregada al álbum! 💕'); }, 800);
+        } catch {
+            txt.textContent = 'Error. Intenta de nuevo.';
+            fill.style.width = '0%';
+            setTimeout(() => { prog.style.display = 'none'; }, 2500);
+        }
+    };
+
+    // Start all listeners when album is opened
+    let alListenersStarted = false;
+    const _origAbrirAlbum = window.abrirAlbum;
+    window.abrirAlbum = function() {
+        if (_origAbrirAlbum) _origAbrirAlbum();
+        if (!alListenersStarted) { alListenersStarted = true; alStartListeners(); }
+    };
+
+    fcStartListener();
+    </script>
+
 </body>
 </html>
